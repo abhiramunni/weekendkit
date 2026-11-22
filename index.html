@@ -518,6 +518,106 @@ function statusFor(p,mins){
 }
 function pickById(id){ for(var i=0;i<PICKS.length;i++) if(PICKS[i].id===id) return PICKS[i]; return null; }
 function tripById(id){ for(var i=0;i<TRIPS.length;i++) if(TRIPS[i].id===id) return TRIPS[i]; return null; }
+/* ---------- picks ---------- */
+function filteredPicks(){
+  var f=state.filter;
+  if(f==='All') return PICKS.slice();
+  if(f==='Tonight') return PICKS.filter(function(p){ return p.start>=1020; });
+  return PICKS.filter(function(p){ return p.cat===f; });
+}
+function renderFilters(){
+  var box=$('#filters'); box.innerHTML='';
+  FILTERS.forEach(function(f){
+    var b=el('button','chip'+(state.filter===f?' on':''),f);
+    b.type='button';
+    b.setAttribute('aria-pressed',state.filter===f?'true':'false');
+    b.addEventListener('click',function(){ state.filter=f; save(); renderFilters(); renderPicks(); });
+    box.appendChild(b);
+  });
+}
+function renderPicks(){
+  var grid=$('#pickGrid'); grid.innerHTML='';
+  var list=filteredPicks();
+  var mins=nowMin();
+  list.forEach(function(p){
+    var st=statusFor(p,mins);
+    var card=el('article','card pick');
+    var inPlan=state.plan[slotFor(p)]===p.id;
+    if(inPlan) card.classList.add('added');
+    var top=el('div','top');
+    top.appendChild(el('span','pill cat',p.cat));
+    var pillCls=st.k==='now'?'now':(st.k==='later'?'later':'done');
+    top.appendChild(el('span','pill '+pillCls,'<span class="dot"></span>'+st.label));
+    if(p.cost===0) top.appendChild(el('span','pill free','Free'));
+    card.appendChild(top);
+    card.appendChild(el('h3','',p.title));
+    var area=el('div','area','<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#b07d2b" stroke-width="2"><path d="M12 21s-7-5.5-7-11a7 7 0 1 1 14 0c0 5.5-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg><span>'+p.area+' · '+p.time+'</span>');
+    card.appendChild(area);
+    card.appendChild(el('p','blurb',p.blurb));
+    var foot=el('div','foot');
+    var price=el('div','price',p.cost==null?p.costNote:(p.cost===0?'Free':inr(p.cost)));
+    if(p.cost!=null&&p.cost>0) price.appendChild(el('small','',p.costNote));
+    else if(p.cost==null) price.appendChild(el('small','','per person — check listing'));
+    foot.appendChild(price);
+    var btn=el('button','btn small'+(inPlan?' gold':''),inPlan?'In my day <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" style="vertical-align:-2px"><path d="M4 12.5l5 5L20 6.5"/></svg>':'Add to my day');
+    btn.type='button';
+    btn.addEventListener('click',function(){ addToDay(p.id); });
+    foot.appendChild(btn);
+    card.appendChild(foot);
+    grid.appendChild(card);
+  });
+  $('#pickCount').textContent='Showing '+list.length+' of '+PICKS.length+' picks'+(state.filter!=='All'?' · filtered by “'+state.filter+'”':'')+'.';
+}
+/* ---------- my day ---------- */
+function addToDay(id){
+  var p=pickById(id); if(!p) return;
+  var slot=slotFor(p);
+  var prev=state.plan[slot];
+  state.plan[slot]=id; save();
+  renderPicks(); renderSlots();
+  if(prev&&prev!==id){ var pp=pickById(prev); toast('Swapped “'+pp.title+'” for “'+p.title+'”.'); }
+  else toast('“'+p.title+'” added to your '+slot+'.');
+  safeScroll($('#myday'));
+}
+function removeFromDay(slot){
+  state.plan[slot]=null; save(); renderPicks(); renderSlots();
+}
+function renderSlots(){
+  var box=$('#slots'); box.innerHTML='';
+  SLOTS.forEach(function(s){
+    var p=state.plan[s.id]?pickById(state.plan[s.id]):null;
+    var card=el('div','card slot');
+    var clock=el('div','clock','<b>'+s.clock+'</b><span>'+s.ampm+'</span>');
+    card.appendChild(clock);
+    var body=el('div','s-body');
+    body.appendChild(el('div','lbl',s.label+' · '+s.range));
+    if(p){
+      body.appendChild(el('h3','',p.title));
+      body.appendChild(el('p','',p.area+' · '+p.time+(p.cost!=null&&p.cost>0?' · '+inr(p.cost)+' per person':'')));
+      var row=el('div','');
+      var rm=el('button','btn ghost small','Remove');
+      rm.type='button';
+      rm.addEventListener('click',function(){ removeFromDay(s.id); });
+      row.appendChild(rm);
+      body.appendChild(row);
+    }else{
+      body.appendChild(el('div','empty','Nothing planned yet — pick something from today’s list above.'));
+    }
+    card.appendChild(body);
+    box.appendChild(card);
+  });
+  /* totals */
+  var total=0,hasListing=false,rows='';
+  SLOTS.forEach(function(s){
+    var p=state.plan[s.id]?pickById(state.plan[s.id]):null;
+    if(!p) return;
+    if(p.cost==null){ hasListing=true; rows+='<div><span>'+p.title+'</span><span>at listing</span></div>'; }
+    else { total+=p.cost; rows+='<div><span>'+p.title+'</span><span>'+(p.cost===0?'Free':inr(p.cost))+'</span></div>'; }
+  });
+  $('#planRows').innerHTML=rows;
+  $('#planTotal').textContent=inr(total)+(hasListing?' +':'');
+  $('#planNote').textContent=hasListing?'Plus tickets priced on the listing — check before you go.':'Per person, for the picks with a known price.';
+}
 /* ---------- day trips ---------- */
 function renderTrips(){
   var grid=$('#tripGrid'); grid.innerHTML='';
