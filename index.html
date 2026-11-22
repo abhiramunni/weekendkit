@@ -355,7 +355,7 @@ footer .btns{display:flex;gap:8px;flex-wrap:wrap}
       <aside class="card summary" aria-label="Day summary">
         <span class="eyebrow">Day total</span>
         <h3>What today costs</h3>
-        <div class="total num" id="planTotal">₹0</div>
+        <div class="total num" id="planTotal" aria-live="polite">₹0</div>
         <p class="small muted" id="planNote">Add a pick to see the running total.</p>
         <div class="rows" id="planRows"></div>
         <div class="btns">
@@ -376,7 +376,7 @@ footer .btns{display:flex;gap:8px;flex-wrap:wrap}
     <div class="trips" id="tripGrid"></div>
     <div class="trips-note">
       <span class="pill cat" id="savedTripCount">0 saved</span>
-      <span class="small muted" id="savedTripTotal">Save a trip to see what it costs for your group.</span>
+      <span class="small muted" id="savedTripTotal" aria-live="polite">Save a trip to see what it costs for your group.</span>
     </div>
   </section>
 
