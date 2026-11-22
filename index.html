@@ -449,3 +449,72 @@ footer .btns{display:flex;gap:8px;flex-wrap:wrap}
     </div>
   </div>
 </footer>
+<script>
+(function(){
+'use strict';
+var KEY='weekendkit-v1';
+/* ---------- data: verified Sun 22 Nov 2026 listings ---------- */
+var PICKS=[
+ {id:'shreya',cat:'Music',title:'Shreya Ghoshal — The Unstoppable India Tour',time:'6:00 PM',start:1080,dur:180,area:'District Arena @ Terraform, Yelahanka',cost:null,costNote:'Tickets on listing',blurb:'The big one tonight — her India tour lands in Bengaluru.'},
+ {id:'theatre',cat:'Culture',title:'Girish Karnad Theatre Festival',time:'11:00 AM',start:660,dur:360,area:'Alliance Française',cost:null,costNote:'Tickets on listing',blurb:'A day of theatre honouring Girish Karnad.'},
+ {id:'lucknowi',cat:'Food',title:'Lucknowi Food Festival',time:'12:00 PM – 10:30 PM',start:720,dur:630,area:'Feast, Sheraton Grand, Brigade Gateway',cost:null,costNote:'À la carte',blurb:'Slow-cooked Lucknow on a plate — lunch, dinner and a Sunday brunch.'},
+ {id:'sundaytable',cat:'Food',title:'The Sunday Table brunch',time:'12:00 – 4:00 PM',start:720,dur:240,area:'Heyou, MG Road',cost:1800,costNote:'₹1,800 per person, incl. taxes',blurb:'Twenty dishes, unlimited, noon to four. The new Sunday table in town.'},
+ {id:'toontown',cat:'Family',title:'Toon Town Brunch',time:'12:30 – 4:00 PM',start:750,dur:210,area:'Courtyard by Marriott, Hebbal',cost:3000,costNote:'₹3,000 + taxes per person',blurb:'A cartoon-themed family brunch — the easy pick if kids are coming.'},
+ {id:'rafi',cat:'Music',title:'SHAAM-E-RAFI-2',time:'5:30 PM',start:1050,dur:150,area:'Bharatiya Vidya Bhavan, Race Course Rd',cost:null,costNote:'Tickets on listing',blurb:'An evening of Rafi classics.'},
+ {id:'yuvan',cat:'Music',title:'Tribute: Yuvan X Harris',time:'7:30 PM',start:1170,dur:180,area:'BudBee Restobar 104',cost:null,costNote:'Tickets on listing',blurb:'Two Tamil music giants, one tribute night.'},
+ {id:'colourwalk',cat:'Free',title:'The Colour Walk',time:'7:30 AM',start:450,dur:120,area:'Cubbon Park',cost:0,costNote:'Free',blurb:'A slow morning walk through Cubbon Park’s colours.'},
+ {id:'artpicnic',cat:'Free',title:'Sunday Art Picnic',time:'10:30 AM',start:630,dur:180,area:'Hemavathi Park, HSR Layout',cost:0,costNote:'Free',blurb:'Bring a sketchbook, sit on the grass, make something.'},
+ {id:'kartopia',cat:'Outdoors',title:'Maverick Car Racing Event',time:'11:00 AM',start:660,dur:300,area:'Meco Kartopia',cost:null,costNote:'Pay at venue',blurb:'Go-karts and racing energy for a Sunday afternoon.'},
+ {id:'sushi',cat:'Food',title:'Sushi O’Clock',time:'Lunch & dinner',start:720,dur:660,area:'OKO, The LaLiT Ashok',cost:null,costNote:'À la carte',blurb:'A short, well-judged sushi menu — veg rolls included. Runs till 30 Nov.'},
+ {id:'longrun',cat:'Free',title:'Sunday Long Run',time:'6:00 AM',start:360,dur:180,area:'PUMA Store, Indiranagar',cost:0,costNote:'Free',blurb:'12–15 km with Coach Murali’s group. Early birds only.'}
+];
+var TRIPS=[
+ {id:'nandi',name:'Nandi Hills',km:60,drive:'~1.5 h',best:'Sunrise + breakfast at the top',budget:800,tag:'Closest escape'},
+ {id:'bannerghatta',name:'Bannerghatta Safari',km:22,drive:'~1 h',best:'Safari + zoo — kids love it',budget:600,tag:'In the city'},
+ {id:'lepakshi',name:'Lepakshi',km:120,drive:'~2.5 h',best:'Hanging pillar + old murals',budget:900,tag:'History'},
+ {id:'mysuru',name:'Mysuru',km:145,drive:'~3 h',best:'Palace + Chamundi Hills',budget:1500,tag:'Classic day out'},
+ {id:'shivanasamudra',name:'Shivanasamudra Falls',km:135,drive:'~3 h',best:'Twin waterfalls, best after rain',budget:1000,tag:'Waterfalls'},
+ {id:'coorg',name:'Coorg',km:265,drive:'~5.5 h',best:'Coffee estates — stay the night',budget:4500,tag:'Weekend stay'}
+];
+var PACK=['Water bottle','Sunscreen + cap','Power bank','Snacks for the road','Cash in small notes','Photo ID','First-aid basics','A bag for your litter'];
+var GUIDES=[
+ {t:'Last metro leaves at 11 PM',b:'Plan the return before the fun starts. Purple, Green and Yellow lines all run till about 11 PM — after that it is cabs and surge pricing.'},
+ {t:'Book the ticket before you leave',b:'Sunday shows sell out by afternoon. A ticket screenshot on your phone beats standing in a queue that is not moving.'},
+ {t:'Leave by 4 PM for evening shows',b:'Yelahanka is 45–60 minutes from BTM in Sunday-evening traffic. The show starts at 6 — the road does not care.'},
+ {t:'Carry cash for small stalls',b:'Food fests and flea stalls often skip UPI when networks jam. A few hundred in small notes saves the day.'},
+ {t:'Free things still need timing',b:'Walks and picnics start early and end on time. A 10:30 AM art picnic is a 10:30 AM art picnic — not a noon one.'},
+ {t:'Brunch means book a table',b:'Sunday brunches fill up fast. Call ahead, confirm the per-person price, and ask about the kids’ price before you go.'}
+];
+var SLOTS=[
+ {id:'morning',label:'Morning',range:'6 AM – 12 PM',clock:'6',ampm:'AM'},
+ {id:'afternoon',label:'Afternoon',range:'12 – 5 PM',clock:'12',ampm:'PM'},
+ {id:'evening',label:'Evening',range:'5 PM onwards',clock:'6',ampm:'PM'}
+];
+var FILTERS=['All','Music','Food','Culture','Outdoors','Free','Family','Tonight'];
+function defaultState(){
+  return {seen:false,plan:{morning:null,afternoon:'sundaytable',evening:'shreya'},
+    savedTrips:['nandi'],pack:{'Water bottle':true,'Sunscreen + cap':true,'Cash in small notes':true},
+    people:2,spend:1500,filter:'All',samples:true};
+}
+var state;
+try{ state=JSON.parse(localStorage.getItem(KEY))||defaultState(); }
+catch(e){ state=defaultState(); }
+if(!state.plan) state=defaultState();
+function save(){ try{ localStorage.setItem(KEY,JSON.stringify(state)); }catch(e){} }
+function $(s){ return document.querySelector(s); }
+function el(tag,cls,html){ var d=document.createElement(tag); if(cls) d.className=cls; if(html!=null) d.innerHTML=html; return d; }
+function inr(n){ return '₹'+n.toLocaleString('en-IN'); }
+function safeScroll(t){ try{ if(t&&t.scrollIntoView) t.scrollIntoView({behavior:'smooth',block:'start'}); }catch(e){} }
+var toastTimer=null;
+function toast(msg){ var t=$('#toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(toastTimer); toastTimer=setTimeout(function(){ t.classList.remove('show'); },2600); }
+/* minutes since midnight, local time */
+function nowMin(){ var d=new Date(); return d.getHours()*60+d.getMinutes(); }
+function slotFor(p){ if(p.start<720) return 'morning'; if(p.start<1020) return 'afternoon'; return 'evening'; }
+function statusFor(p,mins){
+  if(mins==null) mins=nowMin();
+  if(mins<p.start) return {k:'later',label:'Later today · starts '+p.time};
+  if(mins<p.start+p.dur) return {k:'now',label:'Happening now'};
+  return {k:'done',label:'Done for today'};
+}
+function pickById(id){ for(var i=0;i<PICKS.length;i++) if(PICKS[i].id===id) return PICKS[i]; return null; }
+function tripById(id){ for(var i=0;i<TRIPS.length;i++) if(TRIPS[i].id===id) return TRIPS[i]; return null; }
