@@ -582,3 +582,67 @@ function renderPack(){
   $('#packRing').style.background='conic-gradient(var(--terra) '+deg+'deg, var(--paper2) 0deg)';
   $('#packText').textContent=done===PACK.length?'All packed. Have a great Sunday.':(done===0?'Nothing packed yet.':done+' of '+PACK.length+' packed — '+ (PACK.length-done) +' to go.');
 }
+/* ---------- guides ---------- */
+function renderGuides(){
+  var grid=$('#guideGrid'); grid.innerHTML='';
+  GUIDES.forEach(function(g,i){
+    var card=el('article','card guide');
+    card.appendChild(el('div','n',String(i+1)));
+    card.appendChild(el('h3','',g.t));
+    card.appendChild(el('p','',g.b));
+    grid.appendChild(card);
+  });
+}
+/* ---------- countdown to 6 PM ---------- */
+function tick(){
+  var now=new Date();
+  var target=new Date(now.getFullYear(),now.getMonth(),now.getDate(),18,0,0);
+  var diff=Math.max(0,target-now);
+  var h=Math.floor(diff/3600000), m=Math.floor(diff%3600000/60000), s=Math.floor(diff%60000/1000);
+  var cdH=$('#cdH'), cdM=$('#cdM'), cdS=$('#cdS');
+  if(!cdH) return;
+  if(diff===0){ cdH.textContent='ON'; cdM.textContent='NOW'; cdS.textContent=''; }
+  else { cdH.textContent=String(h).padStart(2,'0'); cdM.textContent=String(m).padStart(2,'0'); cdS.textContent=String(s).padStart(2,'0'); }
+}
+/* ---------- copy / clear / samples ---------- */
+function planText(){
+  var lines=['My Sunday in Bengaluru — 22 Nov 2026',''];
+  SLOTS.forEach(function(s){
+    var p=state.plan[s.id]?pickById(state.plan[s.id]):null;
+    lines.push(s.label+' ('+s.range+'): '+(p?p.title+' — '+p.area+' · '+p.time+(p.cost!=null&&p.cost>0?' · '+inr(p.cost)+' pp':''):'— nothing planned'));
+  });
+  lines.push('');
+  var total=0,hasListing=false;
+  SLOTS.forEach(function(s){ var p=state.plan[s.id]?pickById(state.plan[s.id]):null; if(p){ if(p.cost==null) hasListing=true; else total+=p.cost; } });
+  lines.push('Day total: '+inr(total)+' per person'+(hasListing?' + tickets on listing':''));
+  lines.push('Weekend budget: '+inr(state.people*state.spend)+' for '+state.people+' people ('+inr(state.spend)+' each)');
+  var saved=state.savedTrips.map(function(id){ var t=tripById(id); return t?t.name:null; }).filter(Boolean);
+  if(saved.length) lines.push('Saved day trips: '+saved.join(', '));
+  lines.push('Weather: 28°C now, high 29°, 0% rain, sunset 5:49 PM.');
+  return lines.join('\n');
+}
+function copyText(txt,msg){
+  function done(){ toast(msg); }
+  if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(txt).then(done,function(){ fallback(); }); }
+  else fallback();
+  function fallback(){
+    try{ var ta=document.createElement('textarea'); ta.value=txt; ta.style.position='fixed'; ta.style.opacity='0'; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); done(); }
+    catch(e){ toast('Copy did not work — select the text manually.'); }
+  }
+}
+function removeSamples(){
+  state.plan={morning:null,afternoon:null,evening:null};
+  state.savedTrips=[]; state.samples=false;
+  save(); renderPicks(); renderSlots(); renderTrips();
+  toast('Samples removed — your day is a blank page now.');
+}
+function eraseAll(){
+  if(!window.__wkConfirmErase){ window.__wkConfirmErase=true; toast('Tap “Erase everything” again to confirm — this clears your plan, trips and packing list.'); setTimeout(function(){ window.__wkConfirmErase=false; },4000); return; }
+  window.__wkConfirmErase=false;
+  try{ localStorage.removeItem(KEY); }catch(e){}
+  state=defaultState(); state.seen=true; state.samples=false;
+  state.plan={morning:null,afternoon:null,evening:null}; state.savedTrips=[];
+  state.pack={}; state.people=2; state.spend=1500; state.filter='All';
+  save(); renderAll();
+  toast('Everything erased. Fresh Sunday, fresh start.');
+}
