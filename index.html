@@ -234,3 +234,55 @@ footer .btns{display:flex;gap:8px;flex-wrap:wrap}
 </style>
 </head>
 <body>
+<!-- intro overlay -->
+<div id="intro" role="dialog" aria-label="Welcome">
+  <svg class="sun" viewBox="0 0 96 96" fill="none" aria-hidden="true">
+    <circle cx="48" cy="48" r="20" fill="#e8c96a"/>
+    <circle cx="48" cy="48" r="26" fill="none" stroke="#e8c96a" stroke-width="2" opacity=".5"/>
+    <g stroke="#e8c96a" stroke-width="3" stroke-linecap="round">
+      <line x1="48" y1="8" x2="48" y2="18"/><line x1="48" y1="78" x2="48" y2="88"/>
+      <line x1="8" y1="48" x2="18" y2="48"/><line x1="78" y1="48" x2="88" y2="48"/>
+      <line x1="20" y1="20" x2="27" y2="27"/><line x1="69" y1="69" x2="76" y2="76"/>
+      <line x1="76" y1="20" x2="69" y2="27"/><line x1="27" y1="69" x2="20" y2="76"/>
+    </g>
+  </svg>
+  <h1 aria-label="WeekendKit"><span>W</span><span>e</span><span>e</span><span>k</span><span>e</span><span>n</span><span>d</span><span>K</span><span>i</span><span>t</span></h1>
+  <p>Bengaluru, this Sunday — planned in two minutes.</p>
+  <div class="bar"><i></i></div>
+  <button class="skip" id="skipIntro" type="button">Skip intro</button>
+</div>
+
+<!-- coach -->
+<div id="coach" role="dialog" aria-label="Quick tour">
+  <div class="sheet">
+    <span class="eyebrow" id="coachStep">Step 1 of 3</span>
+    <h3 id="coachTitle">Pick what catches your eye</h3>
+    <p id="coachText">Twelve real things happening in Bengaluru today — concerts, food fests, free walks. Filter by mood, tap “Add to my day” on the ones you like.</p>
+    <div class="row">
+      <div class="dots"><i class="on"></i><i></i><i></i></div>
+      <div style="display:flex;gap:8px">
+        <button class="btn ghost small" id="coachSkip" type="button">Skip tour</button>
+        <button class="btn small" id="coachNext" type="button">Next</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="toast" role="status" aria-live="polite"></div>
+
+<header class="mast">
+  <div class="mast-in">
+    <a class="logo" href="#top">
+      <span class="mark" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="5" fill="#fffdf7"/><g stroke="#fffdf7" stroke-width="2" stroke-linecap="round"><line x1="12" y1="1" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="23"/><line x1="1" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="23" y2="12"/><line x1="4.2" y1="4.2" x2="6.3" y2="6.3"/><line x1="17.7" y1="17.7" x2="19.8" y2="19.8"/><line x1="19.8" y1="4.2" x2="17.7" y2="6.3"/><line x1="6.3" y1="17.7" x2="4.2" y2="19.8"/></g></svg></span>
+      <span><b>WeekendKit</b><small>Bengaluru · Sunday</small></span>
+    </a>
+    <nav aria-label="Sections">
+      <a href="#picks">Today's picks</a>
+      <a href="#myday">My day</a>
+      <a href="#trips">Day trips</a>
+      <a href="#budget">Budget</a>
+      <a href="#guides">Guides</a>
+    </nav>
+    <span class="date-chip">Sun 22 Nov 2026</span>
+  </div>
+</header>
