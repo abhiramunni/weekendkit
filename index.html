@@ -127,3 +127,37 @@ header.mast{position:sticky;top:0;z-index:100;background:rgba(250,245,236,.92);b
 .tonight .cd b{display:block;font-size:1.6rem;font-family:'Fraunces',serif;line-height:1}
 .tonight .cd span{font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:#e8dcc2}
 .tonight .btn{position:relative;z-index:1}
+/* ---------- picks ---------- */
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 18px}
+.picks{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.pick{display:flex;flex-direction:column;padding:20px;transition:transform .18s ease,box-shadow .18s ease}
+.pick:hover{transform:translateY(-3px);box-shadow:var(--shadow)}
+.pick .top{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:10px}
+.pick h3{font-size:1.18rem;margin-bottom:4px}
+.pick .area{font-size:.86rem;color:var(--ink2);display:flex;gap:6px;align-items:flex-start}
+.pick .area svg{flex:0 0 auto;margin-top:3px}
+.pick .blurb{color:var(--ink2);font-size:.92rem;margin:10px 0 14px;flex:1}
+.pick .foot{display:flex;align-items:center;justify-content:space-between;gap:10px;border-top:1px solid var(--line);padding-top:14px}
+.pick .price{font-weight:800;font-size:.95rem}
+.pick .price small{display:block;font-weight:500;color:var(--ink2);font-size:.78rem}
+.pick.added{outline:2px solid var(--terra);outline-offset:-2px}
+/* ---------- my day builder ---------- */
+.builder{display:grid;grid-template-columns:1fr 340px;gap:16px;align-items:start}
+.slots{display:flex;flex-direction:column;gap:12px}
+.slot{display:flex;gap:16px;padding:18px 20px;align-items:flex-start}
+.slot .clock{flex:0 0 auto;width:52px;height:52px;border-radius:14px;background:var(--paper2);display:flex;flex-direction:column;align-items:center;justify-content:center;border:1px solid var(--line2)}
+.slot .clock b{font-family:'Fraunces',serif;font-size:1.05rem;line-height:1}
+.slot .clock span{font-size:.62rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--ink3)}
+.slot .s-body{flex:1;min-width:0}
+.slot .s-body .lbl{font-size:.72rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--bronze)}
+.slot .s-body h3{font-size:1.15rem;margin:3px 0}
+.slot .s-body p{color:var(--ink2);font-size:.9rem}
+.slot .empty{border:1px dashed var(--line2);border-radius:12px;padding:12px 14px;color:var(--ink3);font-size:.9rem}
+.slot .swap{font-size:.8rem;color:var(--ink2);margin-top:6px}
+.summary{padding:22px;position:sticky;top:76px}
+.summary h3{font-size:1.25rem;margin-bottom:4px}
+.summary .total{font-family:'Fraunces',serif;font-size:2.2rem;margin:10px 0 2px}
+.summary .rows{margin:14px 0}
+.summary .rows div{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px dashed var(--line);font-size:.92rem}
+.summary .rows div:last-child{border-bottom:0}
+.summary .btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
