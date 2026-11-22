@@ -329,3 +329,39 @@ footer .btns{display:flex;gap:8px;flex-wrap:wrap}
       <button class="btn gold" id="addShreya" type="button">Add to my day</button>
     </div>
   </section>
+  <section id="picks" aria-label="Today's picks">
+    <div class="sec-head">
+      <div>
+        <span class="eyebrow">Today · Sunday 22 Nov</span>
+        <h2>What's on in Bengaluru today</h2>
+      </div>
+      <p>Real listings, checked this morning. Times are today's — anything already over shows as “Done for today”.</p>
+    </div>
+    <div class="filters" id="filters" role="group" aria-label="Filter picks"></div>
+    <div class="picks" id="pickGrid"></div>
+    <p class="small muted" id="pickCount" style="margin-top:12px"></p>
+  </section>
+
+  <section id="myday" aria-label="My day">
+    <div class="sec-head">
+      <div>
+        <span class="eyebrow">Your plan</span>
+        <h2>My day, in three parts</h2>
+      </div>
+      <p>One pick per part of the day. Tap “Add to my day” on any pick and it lands in the right slot — swap it any time.</p>
+    </div>
+    <div class="builder">
+      <div class="slots" id="slots"></div>
+      <aside class="card summary" aria-label="Day summary">
+        <span class="eyebrow">Day total</span>
+        <h3>What today costs</h3>
+        <div class="total num" id="planTotal">₹0</div>
+        <p class="small muted" id="planNote">Add a pick to see the running total.</p>
+        <div class="rows" id="planRows"></div>
+        <div class="btns">
+          <button class="btn small" id="copyPlan" type="button">Copy my plan</button>
+          <button class="btn ghost small" id="clearPlan" type="button">Clear day</button>
+        </div>
+      </aside>
+    </div>
+  </section>
