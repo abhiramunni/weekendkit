@@ -530,7 +530,7 @@ function renderFilters(){
   FILTERS.forEach(function(f){
     var b=el('button','chip'+(state.filter===f?' on':''),f);
     b.type='button';
-    b.setAttribute('aria-pressed',state.filter===f?'true':'false');
+    b.setAttribute('aria-pressed',state.filter===f?'true':'false'); b.title=f==='All'?'Show all picks':'Show only '+f+' picks';
     b.addEventListener('click',function(){ state.filter=f; save(); renderFilters(); renderPicks(); });
     box.appendChild(b);
   });
