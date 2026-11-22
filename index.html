@@ -286,3 +286,46 @@ footer .btns{display:flex;gap:8px;flex-wrap:wrap}
     <span class="date-chip">Sun 22 Nov 2026</span>
   </div>
 </header>
+<main class="wrap" id="top">
+  <section class="hero" aria-label="This weekend in Bengaluru">
+    <img class="bg" src="{{HERO_IMG}}" alt="Golden morning light through the rain trees of Cubbon Park, Bengaluru" onerror="this.style.display='none'">
+    <div class="shade"></div>
+    <div class="copy">
+      <span class="kicker">Bengaluru · Sunday 22 November 2026</span>
+      <h1>This Sunday, the city is showing off.</h1>
+      <p>Shreya Ghoshal live tonight, a Lucknowi food festival, a theatre festival, three Sunday brunches and a free art picnic — all happening today. Pick a few, build your day, and go.</p>
+      <div class="stats">
+        <div class="stat"><b>12</b><span>things on today</span></div>
+        <div class="stat"><b>6</b><span>day trips</span></div>
+        <div class="stat"><b>0% rain</b><span>all day</span></div>
+        <div class="stat"><b>5:49 PM</b><span>sunset</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section aria-label="Today's weather" style="padding-top:0">
+    <div class="wx">
+      <div class="cell"><span>Right now</span><b>28°C</b><small>Partly cloudy</small></div>
+      <div class="cell"><span>High / Low</span><b>29° / 17°</b><small>Cool evening</small></div>
+      <div class="cell"><span>Rain</span><b>0%</b><small>No umbrella needed</small></div>
+      <div class="cell"><span>Wind</span><b>12 km/h</b><small>East breeze</small></div>
+      <div class="cell"><span>Air quality</span><b>AQI 139</b><small>Unhealthy for sensitive groups — carry a mask if that is you</small></div>
+    </div>
+    <p class="small muted" style="margin-top:10px">Weather for Bengaluru, Sunday 22 Nov 2026 — checked this morning. AQI is the US scale; 139 means sensitive groups should keep outdoor time shorter.</p>
+  </section>
+
+  <section aria-label="Tonight" style="padding-top:0">
+    <div class="tonight">
+      <div class="t-copy">
+        <span class="eyebrow">Tonight · 6:00 PM</span>
+        <h2>Shreya Ghoshal live in Bengaluru</h2>
+        <p>The Unstoppable India Tour at District Arena @ Terraform, Yelahanka. Leave BTM by 4 PM — Sunday-evening traffic to Yelahanka runs 45–60 minutes.</p>
+      </div>
+      <div class="cd" id="countdown" aria-label="Countdown to the concert">
+        <div class="u"><b id="cdH">--</b><span>hours</span></div>
+        <div class="u"><b id="cdM">--</b><span>mins</span></div>
+        <div class="u"><b id="cdS">--</b><span>secs</span></div>
+      </div>
+      <button class="btn gold" id="addShreya" type="button">Add to my day</button>
+    </div>
+  </section>
