@@ -161,3 +161,76 @@ header.mast{position:sticky;top:0;z-index:100;background:rgba(250,245,236,.92);b
 .summary .rows div{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px dashed var(--line);font-size:.92rem}
 .summary .rows div:last-child{border-bottom:0}
 .summary .btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+/* ---------- day trips ---------- */
+.trips{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.trip{padding:20px;display:flex;flex-direction:column}
+.trip .km{font-family:'Fraunces',serif;font-size:1.9rem;line-height:1}
+.trip .km small{font-size:.85rem;color:var(--ink2);font-family:'Inter',sans-serif;font-weight:600}
+.trip h3{font-size:1.2rem;margin:8px 0 2px}
+.trip .best{color:var(--ink2);font-size:.9rem;flex:1}
+.trip .meta{display:flex;gap:12px;flex-wrap:wrap;margin:12px 0;font-size:.85rem;color:var(--ink2)}
+.trip .meta b{color:var(--ink)}
+.trip .foot{display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--line);padding-top:12px}
+.trip .price{font-weight:800}
+.trip .price small{display:block;font-weight:500;color:var(--ink2);font-size:.78rem}
+.trips-note{margin-top:14px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+/* ---------- budget + checklist ---------- */
+.split{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start}
+.panel{padding:24px}
+.panel h3{font-size:1.25rem;margin-bottom:4px}
+.slider-row{margin:18px 0}
+.slider-row label{display:flex;justify-content:space-between;font-weight:600;font-size:.95rem;margin-bottom:8px}
+.slider-row label b{font-family:'Fraunces',serif;font-size:1.1rem}
+input[type=range]{width:100%;accent-color:var(--terra);height:28px}
+.bars{margin-top:16px}
+.bars .bar-row{margin-bottom:12px}
+.bars .bar-row .lbl{display:flex;justify-content:space-between;font-size:.9rem;margin-bottom:5px}
+.bars .track{height:10px;background:var(--paper2);border-radius:99px;overflow:hidden}
+.bars .fill{height:100%;border-radius:99px;transition:width .4s ease}
+.check-list{list-style:none;margin-top:14px}
+.check-list li{display:flex;gap:12px;align-items:flex-start;padding:11px 4px;border-bottom:1px solid var(--line);cursor:pointer}
+.check-list li:last-child{border-bottom:0}
+.check-list .box{flex:0 0 auto;width:22px;height:22px;border-radius:7px;border:2px solid var(--line2);margin-top:2px;display:flex;align-items:center;justify-content:center;background:var(--card);transition:all .15s ease}
+.check-list li.done .box{background:var(--terra);border-color:var(--terra);color:#fff}
+.check-list li.done span{text-decoration:line-through;color:var(--ink3)}
+.check-list li span{font-size:.95rem}
+.ring-wrap{display:flex;align-items:center;gap:14px;margin-top:16px}
+.ring{width:74px;height:74px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-family:'Fraunces',serif;font-size:1.05rem;flex:0 0 auto}
+/* ---------- photo band ---------- */
+.band{margin-top:26px;border-radius:22px;overflow:hidden;position:relative;min-height:300px;display:flex;align-items:flex-end;box-shadow:var(--shadow)}
+.band img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;animation:kenburns 30s ease-in-out infinite alternate}
+.band .shade{position:absolute;inset:0;background:linear-gradient(90deg,rgba(23,16,6,.78) 0%,rgba(23,16,6,.35) 55%,transparent 100%)}
+.band .copy{position:relative;padding:30px;color:#fdf8ee;max-width:520px}
+.band h2{font-size:clamp(1.5rem,4vw,2rem);margin-bottom:8px}
+.band p{color:#f0e4cd}
+/* ---------- guides ---------- */
+.guides{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.guide{padding:20px}
+.guide .n{width:34px;height:34px;border-radius:50%;background:var(--paper2);border:1px solid var(--line2);display:flex;align-items:center;justify-content:center;font-family:'Fraunces',serif;font-weight:700;color:var(--terra);margin-bottom:12px}
+.guide h3{font-size:1.12rem;margin-bottom:6px}
+.guide p{color:var(--ink2);font-size:.92rem}
+/* ---------- footer ---------- */
+footer{margin-top:44px;border-top:1px solid var(--line);padding:26px 0 40px}
+footer .f-in{display:flex;gap:20px;flex-wrap:wrap;align-items:flex-start;justify-content:space-between}
+footer .fine{color:var(--ink2);font-size:.85rem;max-width:560px}
+footer .btns{display:flex;gap:8px;flex-wrap:wrap}
+@media (max-width:900px){
+  .picks,.trips,.guides{grid-template-columns:repeat(2,1fr)}
+  .builder,.split{grid-template-columns:1fr}
+  .summary{position:static}
+  .wx{grid-template-columns:repeat(2,1fr)}
+  .wx .cell:last-child{grid-column:1/-1}
+}
+@media (max-width:600px){
+  .picks,.trips,.guides{grid-template-columns:1fr}
+  .mast nav{display:none}
+  .hero{min-height:420px}
+  .hero .copy{padding:24px 20px}
+  .tonight{padding:20px}
+  .tonight .cd .u{min-width:62px;padding:8px 10px}
+  .slot{flex-direction:column;gap:10px}
+  .wx{grid-template-columns:repeat(2,1fr)}
+}
+</style>
+</head>
+<body>
