@@ -518,3 +518,67 @@ function statusFor(p,mins){
 }
 function pickById(id){ for(var i=0;i<PICKS.length;i++) if(PICKS[i].id===id) return PICKS[i]; return null; }
 function tripById(id){ for(var i=0;i<TRIPS.length;i++) if(TRIPS[i].id===id) return TRIPS[i]; return null; }
+/* ---------- day trips ---------- */
+function renderTrips(){
+  var grid=$('#tripGrid'); grid.innerHTML='';
+  TRIPS.forEach(function(t){
+    var saved=state.savedTrips.indexOf(t.id)>=0;
+    var card=el('article','card trip');
+    card.appendChild(el('div','km',t.km+' <small>km away</small>'));
+    card.appendChild(el('h3','',t.name));
+    card.appendChild(el('p','best',t.best));
+    var meta=el('div','meta','<span>Drive <b>'+t.drive+'</b></span><span>Tag <b>'+t.tag+'</b></span>');
+    card.appendChild(meta);
+    var foot=el('div','foot');
+    foot.appendChild(el('div','price',inr(t.budget)+'<small>per person / day</small>'));
+    var btn=el('button','btn small'+(saved?' gold':''),saved?'Saved <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" style="vertical-align:-2px"><path d="M4 12.5l5 5L20 6.5"/></svg>':'Save trip');
+    btn.type='button';
+    btn.addEventListener('click',function(){
+      var i=state.savedTrips.indexOf(t.id);
+      if(i>=0){ state.savedTrips.splice(i,1); toast('Removed “'+t.name+'” from saved trips.'); }
+      else { state.savedTrips.push(t.id); toast('“'+t.name+'” saved for a weekend.'); }
+      save(); renderTrips();
+    });
+    foot.appendChild(btn);
+    card.appendChild(foot);
+    grid.appendChild(card);
+  });
+  var n=state.savedTrips.length;
+  $('#savedTripCount').textContent=n+' saved'+(n===1?'':'');
+  if(n===0){ $('#savedTripTotal').textContent='Save a trip to see what it costs for your group.'; return; }
+  var sum=0; state.savedTrips.forEach(function(id){ var t=tripById(id); if(t) sum+=t.budget; });
+  $('#savedTripTotal').textContent='Saved trips: '+inr(sum)+' per person · '+inr(sum*state.people)+' for '+state.people+' of you.';
+}
+/* ---------- budget ---------- */
+function renderBudget(){
+  $('#peopleVal').textContent=state.people;
+  $('#spendVal').textContent=state.spend.toLocaleString('en-IN');
+  var total=state.people*state.spend;
+  var parts=[['Food & drinks',0.40,'#b4552d'],['Tickets & entry',0.35,'#a67c00'],['Transport',0.25,'#b07d2b']];
+  var box=$('#budgetBars'); box.innerHTML='';
+  box.appendChild(el('div','','<div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font-weight:700">Weekend total</span><b style="font-family:Fraunces,serif;font-size:1.6rem">'+inr(total)+'</b></div><p class="small muted">'+inr(state.spend)+' per person × '+state.people+' people</p>'));
+  parts.forEach(function(pt){
+    var amt=Math.round(total*pt[1]);
+    var row=el('div','bar-row','<div class="lbl"><span>'+pt[0]+' ('+Math.round(pt[1]*100)+'%)</span><b class="num">'+inr(amt)+'</b></div><div class="track"><div class="fill" style="width:'+(pt[1]*100)+'%;background:'+pt[2]+'"></div></div>');
+    box.appendChild(row);
+  });
+}
+/* ---------- packing list ---------- */
+function renderPack(){
+  var list=$('#packList'); list.innerHTML='';
+  var done=0;
+  PACK.forEach(function(item){
+    var isDone=!!state.pack[item];
+    if(isDone) done++;
+    var li=el('li',isDone?'done':'');
+    li.appendChild(el('span','box',isDone?'<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round"><path d="M4 12.5l5 5L20 6.5"/></svg>':''));
+    li.appendChild(el('span','',item));
+    li.addEventListener('click',function(){ state.pack[item]=!state.pack[item]; save(); renderPack(); });
+    list.appendChild(li);
+  });
+  var pct=Math.round(done/PACK.length*100);
+  $('#packRing').textContent=pct+'%';
+  var deg=pct*3.6;
+  $('#packRing').style.background='conic-gradient(var(--terra) '+deg+'deg, var(--paper2) 0deg)';
+  $('#packText').textContent=done===PACK.length?'All packed. Have a great Sunday.':(done===0?'Nothing packed yet.':done+' of '+PACK.length+' packed — '+ (PACK.length-done) +' to go.');
+}
