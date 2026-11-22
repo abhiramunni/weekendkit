@@ -646,3 +646,64 @@ function eraseAll(){
   save(); renderAll();
   toast('Everything erased. Fresh Sunday, fresh start.');
 }
+/* ---------- coach ---------- */
+var COACH=[
+ {t:'Pick what catches your eye',x:'Twelve real things happening in Bengaluru today — concerts, food fests, free walks. Filter by mood, tap “Add to my day” on the ones you like.'},
+ {t:'Your day, in three parts',x:'Morning, afternoon and evening — one pick each. The total updates as you add things, and you can swap a pick any time.'},
+ {t:'Budget before you leave',x:'Two sliders give you an honest weekend number, split into food, tickets and transport. The packing list makes sure nothing gets left behind.'}
+];
+var coachStep=0;
+function showCoach(step){
+  coachStep=step;
+  $('#coachStep').textContent='Step '+(step+1)+' of 3';
+  $('#coachTitle').textContent=COACH[step].t;
+  $('#coachText').textContent=COACH[step].x;
+  $('#coachNext').textContent=step===2?'Start planning':'Next';
+  var dots=document.querySelectorAll('#coach .dots i');
+  dots.forEach(function(d,i){ d.classList.toggle('on',i===step); });
+  $('#coach').classList.add('show');
+}
+function hideCoach(){ $('#coach').classList.remove('show'); }
+/* ---------- intro ---------- */
+function finishIntro(){
+  var intro=$('#intro');
+  if(!intro||intro.classList.contains('hide')) return;
+  intro.classList.add('hide');
+  state.seen=true; save();
+  if(!state.coachDone){ showCoach(0); }
+}
+function renderAll(){
+  renderFilters(); renderPicks(); renderSlots(); renderTrips(); renderBudget(); renderPack(); renderGuides();
+}
+/* ---------- wire up ---------- */
+function init(){
+  renderAll();
+  tick(); setInterval(tick,1000);
+  var intro=$('#intro');
+  if(state.seen){ intro.classList.add('quick'); }
+  setTimeout(finishIntro, state.seen?1200:3800);
+  $('#skipIntro').addEventListener('click',finishIntro);
+  intro.addEventListener('click',function(e){ if(e.target===intro) finishIntro(); });
+  $('#addShreya').addEventListener('click',function(){ addToDay('shreya'); });
+  $('#copyPlan').addEventListener('click',function(){ copyText(planText(),'Plan copied — send it to your group.'); });
+  $('#clearPlan').addEventListener('click',function(){
+    state.plan={morning:null,afternoon:null,evening:null}; save(); renderPicks(); renderSlots();
+    toast('Day cleared.');
+  });
+  $('#removeSamples').addEventListener('click',removeSamples);
+  $('#eraseAll').addEventListener('click',eraseAll);
+  $('#peopleRange').addEventListener('input',function(e){ state.people=parseInt(e.target.value,10)||2; save(); renderBudget(); renderTrips(); });
+  $('#spendRange').addEventListener('input',function(e){ state.spend=parseInt(e.target.value,10)||1500; save(); renderBudget(); });
+  $('#coachNext').addEventListener('click',function(){
+    if(coachStep>=2){ state.coachDone=true; save(); hideCoach(); }
+    else showCoach(coachStep+1);
+  });
+  $('#coachSkip').addEventListener('click',function(){ state.coachDone=true; save(); hideCoach(); });
+}
+if(document.readyState==='loading'){ document.addEventListener('DOMContentLoaded',init); }
+else { init(); }
+window.WeekendKit={state:function(){return state;},PICKS:PICKS,TRIPS:TRIPS,PACK:PACK,GUIDES:GUIDES,statusFor:statusFor,slotFor:slotFor,planText:planText,renderAll:renderAll};
+})();
+</script>
+</body>
+</html>
